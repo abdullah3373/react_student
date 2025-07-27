@@ -1,0 +1,107 @@
+=======
+import React, { useState, useEffect } from 'react';
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+  const [students, setStudents] = useState(studentsData);
+=======
+  const [students, setStudents] = useState(() => {
+    const savedStudents = localStorage.getItem('students');
+    return savedStudents ? JSON.parse(savedStudents) : studentsData;
+  });
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+  return (
+    <div className="App">
+      <Header />
+      <main className="container">
+        <div className="form-section">
+          {editing ? (
+            <EditStudentForm
+              setEditing={setEditing}
+              currentStudent={currentStudent}
+              updateStudent={updateStudent}
+            />
+          ) : (
+            <AddStudentForm addStudent={addStudent} />
+          )}
+        </div>
+
+        <div className="list-section">
+          <h2>View Students</h2>
+
+          {/* **NEW**: Search and Sort controls */}
+          <div className="controls">
+            <input
+              type="text"
+              placeholder="Search by name..."
+              className="search-input"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div className="sort-buttons">
+              <button onClick={sortByAge}>Sort by Age</button>
+              <button onClick={sortByGrade}>Sort by Grade</button>
+            </div>
+          </div>
+          
+          <StudentList
+            students={filteredStudents} // Pass the FILTERED list to the component
+            onEdit={editRow}
+            onDelete={deleteStudent}
+          />
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+=======
+  useEffect(() => {
+    localStorage.setItem('students', JSON.stringify(students));
+  }, [students]);
+
+  return (
+    <div className="App">
+      <Header />
+      <main className="container">
+        <div className="form-section">
+          {editing ? (
+            <EditStudentForm
+              setEditing={setEditing}
+              currentStudent={currentStudent}
+              updateStudent={updateStudent}
+            />
+          ) : (
+            <AddStudentForm addStudent={addStudent} />
+          )}
+        </div>
+
+        <div className="list-section">
+          <h2>View Students</h2>
+
+          {/* **NEW**: Search and Sort controls */}
+          <div className="controls">
+            <input
+              type="text"
+              placeholder="Search by name..."
+              className="search-input"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div className="sort-buttons">
+              <button onClick={sortByAge}>Sort by Age</button>
+              <button onClick={sortByGrade}>Sort by Grade</button>
+            </div>
+          </div>
+          
+          <StudentList
+            students={filteredStudents} // Pass the FILTERED list to the component
+            onEdit={editRow}
+            onDelete={deleteStudent}
+          />
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+};
