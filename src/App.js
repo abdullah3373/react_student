@@ -21,7 +21,9 @@ const App = () => {
     const savedStudents = localStorage.getItem('students');
     return savedStudents ? JSON.parse(savedStudents) : studentsData;
   });
-  const [editing, setEditing] = useState(false);
+  // Remove editing state, replace with formToShow state
+  // const [editing, setEditing] = useState(false);
+  const [formToShow, setFormToShow] = useState('none'); // 'none', 'add', 'edit'
   const initialFormState = { id: null, name: '', age: '', course: '', grade: '' };
   const [currentStudent, setCurrentStudent] = useState(initialFormState);
   
@@ -33,23 +35,25 @@ const App = () => {
   const addStudent = (student) => {
     student.id = students.length > 0 ? students[students.length - 1].id + 1 : 1;
     setStudents([...students, student]);
+    setFormToShow('none'); // Hide form after adding
   };
 
   const deleteStudent = (id) => {
     setStudents(students.filter((student) => student.id !== id));
     if (currentStudent.id === id) {
-        setEditing(false);
+        setFormToShow('none');
+        setCurrentStudent(initialFormState);
     }
   };
 
   const editRow = (student) => {
-    setEditing(true);
     setCurrentStudent({ ...student });
+    setFormToShow('edit');
   };
 
   const updateStudent = (id, updatedStudent) => {
-    setEditing(false);
     setStudents(students.map((student) => (student.id === id ? updatedStudent : student)));
+    setFormToShow('none'); // Hide form after updating
   };
 
   // **NEW**: Sorting functions
@@ -78,14 +82,24 @@ const App = () => {
       <Header />
       <main className="container">
         <div className="form-section">
-          {editing ? (
+          <div className="form-buttons">
+            <button onClick={() => setFormToShow('add')}>Add Student</button>
+            <button
+              onClick={() => setFormToShow('edit')}
+              disabled={currentStudent.id === null}
+            >
+              Update Student
+            </button>
+          </div>
+          {formToShow === 'add' && (
+            <AddStudentForm addStudent={addStudent} onCancel={() => setFormToShow('none')} />
+          )}
+          {formToShow === 'edit' && (
             <EditStudentForm
-              setEditing={setEditing}
+              setEditing={setFormToShow}
               currentStudent={currentStudent}
               updateStudent={updateStudent}
             />
-          ) : (
-            <AddStudentForm addStudent={addStudent} />
           )}
         </div>
 

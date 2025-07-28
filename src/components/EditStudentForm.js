@@ -31,6 +31,7 @@ const EditStudentForm = ({ currentStudent, updateStudent, setEditing }) => {
       <input
         name="age"
         type="number"
+        min="0"
         value={student.age}
         onChange={handleChange}
       />

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import '../styles/Form.css'; // A shared stylesheet for forms
 
-const AddStudentForm = ({ addStudent }) => {
+const AddStudentForm = ({ addStudent, onCancel }) => {
   const [formData, setFormData] = useState({ name: '', age: '', course: '', grade: '' });
   const [errors, setErrors] = useState({});
 
@@ -11,8 +11,8 @@ const AddStudentForm = ({ addStudent }) => {
     if (!formData.name) tempErrors.name = "Name is required.";
     if (!formData.age) {
         tempErrors.age = "Age is required.";
-    } else if (isNaN(formData.age) || formData.age <= 0) {
-        tempErrors.age = "Age must be a positive number.";
+    } else if (isNaN(formData.age) || formData.age < 0) {
+        tempErrors.age = "Age must be zero or a positive number.";
     }
     if (!formData.course) tempErrors.course = "Course is required.";
     if (!formData.grade) tempErrors.grade = "Grade is required.";
@@ -77,6 +77,7 @@ const AddStudentForm = ({ addStudent }) => {
       {errors.grade && <p className="error-text">{errors.grade}</p>}
 
       <button type="submit">Add Student</button>
+      <button type="button" onClick={onCancel}>Cancel</button>
     </form>
   );
 };
